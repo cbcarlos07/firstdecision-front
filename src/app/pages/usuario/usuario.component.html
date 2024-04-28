@@ -1,0 +1,30 @@
+<div class="main">
+    <div class="row">
+        <div class="col-12">
+            <a class="btn-add btn btn-success" [routerLink]="['/new']">Adicionar</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Ações</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of usuarioLista">
+                        <td>{{usuario.nome}}</td>
+                        <td>{{usuario.email}}</td>
+                        <td class="acoes">
+                            <a class="btn btn-warning btn-xs" title="Atualizar" [routerLink]="['/update/',usuario.id]"><i class="fas fa-pencil"></i></a>
+
+                            <button class="btn btn-danger btn-xs" title="Remover"><i class="fas fa-remove"></i></button>
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

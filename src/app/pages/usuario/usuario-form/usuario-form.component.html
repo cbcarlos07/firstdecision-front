@@ -1,0 +1,99 @@
+<div class="main">
+    <div class="row">
+       <h2>Adicionar Usuário</h2>
+    </div>
+    <hr>
+    <div class="row">
+        
+        <div class="col-6">
+            <form [formGroup]="formGroup" *ngIf="formGroup">
+                <div class="form-group">
+                    <label for="">Nome</label>
+                    <input formControlName="nome" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">E-mail</label>
+                    <input type="email" formControlName="email" class="form-control">
+                </div>
+                
+                <div class="senhas" *ngIf="!id">
+
+                    <div class="form-group">
+                        <label for="">Senha</label>
+                        <div class="input-group">
+                            <input [type]="mostrarSenha ? 'text' : 'password'" formControlName="senha" class="form-control"  placeholder="Digite sua senha">
+                            <button class="btn btn-outline-secondary" type="button"  (click)="mostrarSenha = !mostrarSenha">
+                              <i class="fas {{mostrarSenha ? 'fa-eye' : 'fa-eye-slash'}}"></i> <!-- Ícone de olho -->
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Confirmação de Senha</label>
+                        <div class="input-group">
+                            <input [type]="mostrarConfirmaSenha ? 'text' : 'password'" formControlName="confirmacaoSenha" class="form-control" placeholder="Confirme sua senha">
+                            <button class="btn btn-outline-secondary" type="button" (click)="mostrarConfirmaSenha = !mostrarConfirmaSenha">
+                              <i class="fas {{mostrarConfirmaSenha ? 'fa-eye' : 'fa-eye-slash'}}"></i> <!-- Ícone de olho -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br>
+            
+            <p class="{{ validarNome() }}"><i class="fas {{ validarNome() == 'text-success' ?  'fa-check' : 'fa-remove'}}"></i> Nome obrigatório. Deve ter entre 3 e 50 dígitos</p>
+            <p class="{{ validarEmail() }}"><i class="fas {{ validarEmail() == 'text-success' ?  'fa-check' : 'fa-remove'}}"></i> E-mail obrigatório. Deve ser um e-mail válido</p>
+            
+            <div class="row salvar-dados" *ngIf="id">
+                <div class="col-6">
+                    <button class="btn btn-success" [disabled]="validarBtnAlterar()" (click)="salvar()" >
+                        <i class="fas fa-save"></i> Alterar Dados
+                    </button>
+
+                </div>
+            </div>
+            <form [formGroup]="formGroup" *ngIf="formGroup">
+                
+                <div class="senhas" *ngIf="id">
+    
+                    <div class="form-group">
+                        <label for="">Senha</label>
+                        <div class="input-group">
+                            <input [type]="mostrarSenha ? 'text' : 'password'" formControlName="senha" class="form-control"  placeholder="Digite sua senha">
+                            <button class="btn btn-outline-secondary" type="button"  (click)="mostrarSenha = !mostrarSenha">
+                              <i class="fas {{mostrarSenha ? 'fa-eye' : 'fa-eye-slash'}}"></i> <!-- Ícone de olho -->
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Confirmação de Senha</label>
+                        <div class="input-group">
+                            <input [type]="mostrarConfirmaSenha ? 'text' : 'password'" formControlName="confirmacaoSenha" class="form-control" placeholder="Confirme sua senha">
+                            <button class="btn btn-outline-secondary" type="button" (click)="mostrarConfirmaSenha = !mostrarConfirmaSenha">
+                              <i class="fas {{mostrarConfirmaSenha ? 'fa-eye' : 'fa-eye-slash'}}"></i> <!-- Ícone de olho -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p class="{{ validarSenha() }}"><i class="fas {{ validarSenha() == 'text-success' ?  'fa-check' : 'fa-remove'}}"></i> Senha obrigatória. Deve ter entre 6 e 20 dígitos</p>
+            <p class="{{ validarConfirmacaoSenha() }}"><i class="fas {{ validarConfirmacaoSenha() == 'text-success' ?  'fa-check' : 'fa-remove'}}"></i> Senha obrigatória. Deve ser igual a senha</p>
+            <div class="row" *ngIf="!id">
+                <div class="col-6">
+                    <button class="btn btn-success" [disabled]="formGroup?.invalid" (click)="salvar()" >
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="row salvar-dados" *ngIf="id">
+                <div class="col-6">
+                    <button class="btn btn-success" [disabled]="validarBtnAlterarSenha()" (click)="salvar(true)" >
+                        <i class="fas fa-save"></i> Alterar senha
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

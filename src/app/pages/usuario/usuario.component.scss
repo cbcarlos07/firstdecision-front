@@ -1,0 +1,14 @@
+.main{
+    border: 1px solid #ccc;
+    padding: 10px;
+    .btn-add{
+        float: right;
+    }
+
+    
+    .acoes{
+        display: flex;
+        grid-gap: 5px 8px;
+
+    }
+}
