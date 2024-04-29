@@ -144,8 +144,12 @@ export class UsuarioFormComponent implements OnInit {
           catchError((error) => {
             const msg = 'Tivemos um problema ao tentar realizar o registro. Tente novamente em alguns minutos'
             console.error(msg, error);
-
-            this.toastr.error(error && error.error.mensagem ? error.error.mensagem : msg, 'Opa!');
+            let message = null
+            if( error ){
+              if( error.error.mensagem ) message = error.error.mensagem
+              else message = error.error[0]
+            }
+            this.toastr.error(error && message ? message : msg, 'Opa!');
             
             return of({} as Mensagem);
           })
