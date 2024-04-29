@@ -1,10 +1,12 @@
 <div class="main">
     <div class="row">
-       <h2>Adicionar Usuário</h2>
+       <h2>{{ title }} Usuário</h2>
     </div>
+    <button class="btn btn-warning" title="Voltar" (click)="location.back()">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </button>
     <hr>
     <div class="row">
-        
         <div class="col-6">
             <form [formGroup]="formGroup" *ngIf="formGroup">
                 <div class="form-group">
@@ -79,8 +81,8 @@
             <p class="{{ validarConfirmacaoSenha() }}"><i class="fas {{ validarConfirmacaoSenha() == 'text-success' ?  'fa-check' : 'fa-remove'}}"></i> Senha obrigatória. Deve ser igual a senha</p>
             <div class="row" *ngIf="!id">
                 <div class="col-6">
-                    <button class="btn btn-success" [disabled]="formGroup?.invalid" (click)="salvar()" >
-                        <i class="fas fa-save"></i> Salvar
+                    <button class="btn btn-success btn-save" [disabled]="formGroup?.invalid" (click)="salvar()" >
+                        <i class="fas {{carregando ? 'fa-spinner fa-spin' : 'fa-save'}} " ></i> Salvar
                     </button>
 
                 </div>

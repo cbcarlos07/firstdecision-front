@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { CustomValidatorService } from '../../../validators/custom-validator.service';
+import { CustomValidatorService } from '../../../core/validators/custom-validator.service';
 import { UsuarioService } from '../usuario.service';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { MessageService } from 'src/app/message/message.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { Usuario } from '../usuario.model';
-import { Mensagem } from 'src/app/dto/mensagem.dto';
+import { Mensagem } from 'src/app/shared/dto/mensagem.dto';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-form',
@@ -19,10 +20,12 @@ export class UsuarioFormComponent implements OnInit {
   mostrarSenha: boolean = false
   mostrarConfirmaSenha: boolean = false
   id: number  = 0
+  carregando: boolean = false
+  title: string = 'Adicionar'
   constructor(
     private customValidator: CustomValidatorService,
     private service: UsuarioService,
-    private location: Location,
+    public location: Location,
     private toastr: ToastrService,
     private activatedRouter: ActivatedRoute
   ) { }
@@ -39,7 +42,7 @@ export class UsuarioFormComponent implements OnInit {
     const confirmPasswordControl = this.formGroup.get('confirmacaoSenha');
     if (confirmPasswordControl) {
       confirmPasswordControl.valueChanges.subscribe(() => {
-        if (confirmPasswordControl) { // Verifica se confirmPasswordControl não é nulo
+        if (confirmPasswordControl) { 
           this.customValidator.validatePasswordConfirmation(this.getSenha(),this.getConfirmacaoSenha());
         }
       });
@@ -55,6 +58,7 @@ export class UsuarioFormComponent implements OnInit {
             const usuario: Usuario = value.usuario
             if( usuario ){
               this.id = usuario.id || 0
+              this.title = 'Atualizar'
               this.formGroup?.patchValue(usuario)
               this.getNome()?.markAsDirty()
               this.getEmail()?.markAsDirty()
@@ -105,10 +109,10 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   salvar(senha = false){
+    this.carregando = true
     if( this.id > 0 ){
       if( senha ) this.atualizarSenha()
       else this.atualizar() 
-        
     }else{
       this.novo()
     }
@@ -118,6 +122,7 @@ export class UsuarioFormComponent implements OnInit {
     this.service
         .atualizar(this.id, this.formGroup?.value)
         .subscribe((msg: Mensagem)=>{
+          this.carregando = false
           this.toastr.success(msg.mensagem, 'Muito bem!');
           this.location.back()
         })
@@ -126,6 +131,7 @@ export class UsuarioFormComponent implements OnInit {
     this.service
         .atualizarSenha(this.id, this.formGroup?.value)
         .subscribe((msg: Mensagem)=>{
+          this.carregando = false
           this.toastr.success(msg.mensagem, 'Muito bem!');
           this.location.back()
         })
@@ -134,9 +140,22 @@ export class UsuarioFormComponent implements OnInit {
   novo(){
     this.service
         .salvar(this.formGroup?.value)
-        .subscribe((msg: Mensagem)=>{
-          this.toastr.success(msg.mensagem, 'Muito bem!');
-          this.location.back()
+        .pipe(
+          catchError((error) => {
+            const msg = 'Tivemos um problema ao tentar realizar o registro. Tente novamente em alguns minutos'
+            console.error(msg, error);
+
+            this.toastr.error(error && error.error.mensagem ? error.error.mensagem : msg, 'Opa!');
+            
+            return of({} as Mensagem);
+          })
+        )
+        .subscribe((msg: Mensagem)=>{          
+          this.carregando = false
+          if( Object.keys(msg).length > 0 ){
+            this.toastr.success(msg.mensagem, 'Muito bem!');
+            this.location.back()
+          }
         })
   }
 

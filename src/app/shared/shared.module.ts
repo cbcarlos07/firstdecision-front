@@ -3,11 +3,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { ModuleWithProviders, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
-import { SnackbarComponent } from "../message/snackbar/snackbar.component";
 
 @NgModule({
     declarations: [
-        SnackbarComponent
     ],
     imports: [
         CommonModule,
@@ -21,7 +19,7 @@ import { SnackbarComponent } from "../message/snackbar/snackbar.component";
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        SnackbarComponent
+        ModalModule
     ]
 })
 export class SharedModule {

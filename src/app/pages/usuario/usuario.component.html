@@ -19,7 +19,7 @@
                         <td class="acoes">
                             <a class="btn btn-warning btn-xs" title="Atualizar" [routerLink]="['/update/',usuario.id]"><i class="fas fa-pencil"></i></a>
 
-                            <button class="btn btn-danger btn-xs" title="Remover"><i class="fas fa-remove"></i></button>
+                            <button class="btn btn-danger btn-xs" title="Remover" (click)="abrirModalPergunta(usuario)"><i class="fas fa-remove"></i></button>
                             
                         </td>
                     </tr>
