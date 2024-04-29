@@ -2,7 +2,7 @@
 
 ## [1. Introdução](#intro)
 ## [2. O que foi usado](#us)
-## [3. O que foi usado](#prot)
+## [3. Protótipo](#prot)
 
 ## <a id="intro">1. Introdução
     
